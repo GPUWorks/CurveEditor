@@ -34,16 +34,17 @@ const double DEFAULT_LINE_WIDTH = 5.0;
 const GLdouble DEFAULT_COLOR[3] = {0, 0, 0};
 
 #define POINT_HIGHLIGHT_COLOR 1, 1, 1
+#define POINT_COLOR .5, .5, .5
 
 class Freeform {
 protected:
     std::vector<float2> controlPoints;
     // = -1 means no points are selected, = numControlPoints means they all are
-    int selectedControlPoint = -1;
+//    int selectedControlPoint = -1;
     char type;
 public:
     //drawing funcitons
-    virtual void drawControlPoints(bool isSelectedCurve);
+    virtual void drawControlPoints(bool isSelectedCurve, int selectedControlPoint);
     virtual void draw();
     
     //high-level setters
@@ -57,6 +58,7 @@ public:
     //high-level getters
     virtual float2 getPoint(float t) = 0;
     bool isEmpty();
+    virtual bool onLine(float2 clickPosition, float radius);
     
     //getters
     int numControlPoints();

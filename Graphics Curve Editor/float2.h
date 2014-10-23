@@ -109,8 +109,6 @@ public:
     bool withinRange(float2 target, float radius) {
         float2 diff = target - *this;
         float distanceSqrd = (diff.x * diff.x) + (diff.y * diff.y);
-        std::cout << "distance == " << distanceSqrd << std::endl;
-        std::cout << "radius == " << radius << std::endl;
         
         if (distanceSqrd <= radius * radius) {
 //            std::cout << "Within Range\n\n\n\n";

@@ -29,13 +29,12 @@ const float WINDOW_WIDTH = 600;
 const float WINDOW_HEIGHT = 600;
 
 //distance allowed from object for click to be recognized
-const float CLICK_PRECISION = .1;
+const float CLICK_PRECISION = .05;
 //const int NUM_CIRCLES = 10;
 const int MIN_CONTROL_POINTS = 2;
 
 //default drawing colors
 #define HIGHLIGHT_COLOR .0, .0, .8
-#define POINT_COLOR .5, .5, .5
 #define BEZIER_COLOR .9, .9, .1
 #define LAGRANGE_COLOR .1, .9, .1
 #define POLYLINE_COLOR .9, .1, .1
@@ -75,8 +74,6 @@ float pixelToYCoord(int y) {
     return -(float)y * 2.0/WINDOW_HEIGHT + 1.0;
 }
 
-Freeform* curve1;
-
 //--------------------------------------------------------
 // Display callback that is responsible for updating the screen
 //--------------------------------------------------------
@@ -93,7 +90,7 @@ void onDisplay() {
                 glColor3d(HIGHLIGHT_COLOR);
             }
             else if (!curves[i]->isEmpty()) {
-                printf("here\n");
+//                printf("here\n");
                 if(curves[i]->getType() == 'b')
                     glColor3d(BEZIER_COLOR);
                 else if (curves[i]->getType() == 'l')
@@ -108,11 +105,12 @@ void onDisplay() {
     //draw control points
     glPointSize(5.0);
     glColor3d(POINT_COLOR);
+    printf("selectedControlPoint now is %d\n", selectedControlPoint);
     if(!curves.empty()) {
         for (int i = 0; i < curves.size(); i++) {
             bool isSelected = (selectedCurve == i);
             if (!curves[i]->isEmpty())
-                curves[i]->drawControlPoints(isSelected);
+                curves[i]->drawControlPoints(isSelected, selectedControlPoint);
         }
     }
     glutSwapBuffers();
@@ -182,11 +180,6 @@ void onKeyBoard(unsigned char key, int x, int y) {
 
 //when the key is released (if it is the right one?? - do I need it to be)
 void onKeyBoardRelease(unsigned char key, int x, int y) {
-    
-//    printf("controlPoints are: \n)");
-//    for (int i = 0; i < curves[selectedCurve]->numControlPoints(); i++) {
-//        
-//    }
         std::cout << key << " released" << std::endl;
 //    if (validKeyInputs[key]) {
     if (validCurveTypes[key] || key == 'd') {
@@ -205,23 +198,23 @@ void onMouse(int button, int state, int x, int y) {
     float2 coord = float2(pixelToXCoord(x), pixelToYCoord(y));
     if (systemMode == waiting) {
         //select curves or control points
-        bool isControlPoint = false;
-        for (int i = 0; i < curves.size(); i++) {
-            for (int j = 0; j < curves[i]->numControlPoints(); j++) {
-                isControlPoint = coord.withinRange(curves[i]->getControlPoint(j), CLICK_PRECISION);
-            }
-        }
-        //select curves
-        if (!isControlPoint) {
+        if (systemMode == GLUT_DOWN) {
+            bool isControlPoint = false;
             for (int i = 0; i < curves.size(); i++) {
-                if (curves[i]->getType() != POLYLINE) {
-                    for (float t = 0.0; t < (float)curves[i]->numControlPoints() - 1; t += 1/PRECISION) {
-                        float2 target = curves[i]->getPoint(t);
-                        if (coord.withinRange(target, CLICK_PRECISION)) {
-                            //                        std::cout << "selectedCurve = " << selectedCurve << std::endl;
-                            selectedCurve = i;
-                        }
+                for (int j = 0; j < curves[i]->numControlPoints(); j++) {
+                    if (coord.withinRange(curves[i]->getControlPoint(j), CLICK_PRECISION)) {
+                        isControlPoint = true;
+                        selectedControlPoint = j;
+                        printf("selectedControlPoint == %d\n", selectedControlPoint);
+                        selectedCurve = i;
                     }
+                }
+            }
+            //select curves
+            if (!isControlPoint) {
+                for (int i = 0; i < curves.size(); i++) {
+                    if (curves[i]->onLine(coord, CLICK_PRECISION))
+                        selectedCurve = i;
                 }
             }
         }
@@ -242,12 +235,13 @@ void onMouse(int button, int state, int x, int y) {
         }
     }
     
-    //    //probably get rid of selected control points when mouse button is released
-    //    if (state == GLUT_UP) {
-    //        for (int i = 0; i < curves.size(); i++) {
-    //            curves[i]->setSelectedControlPoint(-1);
-    //        }
-    //    }
+//        //probably get rid of selected control points when mouse button is released
+//        if (state == GLUT_UP && selectedControlPoint > -1) {
+//            for (int i = 0; i < curves.size(); i++) {
+//                printf("resetting selected Control Point\n");
+//                selectedControlPoint = -1;
+//            }
+//        }
     
     glutPostRedisplay();
 }
@@ -256,12 +250,6 @@ void onMouse(int button, int state, int x, int y) {
 // The entry point of the application
 //--------------------------------------------------------
 int main(int argc, char *argv[]) {
-    
-//    curve1 = new Polyline();
-//    curve1->addControlPoint(float2(.5, .5));
-//    curve1->addControlPoint(float2(.2, .5));
-//    curve1->addControlPoint(float2(.2, .3));
-//    curve1->addControlPoint(float2(0, 0));
     
     initializevalidCurveTypes();
     

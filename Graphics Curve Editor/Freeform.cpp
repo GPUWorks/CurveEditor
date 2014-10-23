@@ -10,11 +10,28 @@
 
 void Freeform::drawControlPoints(bool isSelectedCurve) {
     glBegin(GL_POINTS);
-//    if (!isSelectedCurve) {
-        for (int i = 0; i < controlPoints.size(); i++) {
+    if (isSelectedCurve) {
+        for (int i = 0; i < numControlPoints(); i++) {
+            printf("selected control point (in drawControlPoints) is == %d\n", selectedControlPoint);
+            if ((selectedControlPoint == i) ||
+                selectedControlPoint == controlPoints.size()) {
+                printf("here\n");
+                glColor3d(POINT_HIGHLIGHT_COLOR);
+            }
+            else {
+                glColor3d(POINT_COLOR);
+            }
             glVertex2d(controlPoints[i].x, controlPoints[i].y);
         }
-//    }
+    }
+    else if (!isSelectedCurve) {
+        glColor3d(POINT_COLOR);
+        for (int i = 0; i < numControlPoints(); i++) {
+                    glVertex2d(controlPoints[i].x, controlPoints[i].y);
+        }
+
+
+    }
 
     glEnd();
 }
@@ -71,4 +88,14 @@ void Freeform::draw() {
         glVertex2d(pt.x, pt.y);
     }
     glEnd();
+}
+
+bool Freeform::onLine(float2 clickPosition, float radius) {
+    for (float t = 0.0; t < (float)numControlPoints() - 1; t += 1/PRECISION) {
+        float2 target = getPoint(t);
+        if (clickPosition.withinRange(target, radius)) {
+            return true;
+        }
+    }
+    return false;
 }

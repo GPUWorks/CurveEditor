@@ -7,6 +7,7 @@
 //
 
 #include "Bezier.h"
+#include <assert.h>
 
 Bezier::Bezier() {
     type = BEZIER;

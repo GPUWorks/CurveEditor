@@ -1,8 +1,21 @@
+Selecting Control Points:
+
+The issue is that I have defined a variable selectedControlPoint within each curve but coded all of main as if it were a global variable. I can't switch it to a global variable because then it would be outside of the scope of Freeform and then I'd have to pass it into the draw function every time.
+
+Options:
+    pass selectedControlPoint into "drawControlPoints" and "deleteControlPoints" and maybe other things. (this would also mean that a curve that is not selected cannot have any selected control points - which I'm not sure is good or bad)
+    deal with having a selectedControlPoint variable in each curve.
+
+
+
+
 Bezier: works
 Lagrange: works
 Polyline: works
 
 Control Points: works
+
+
 
 Points:
 
@@ -26,3 +39,8 @@ x (10) Support removing control points of the selected curve, by holding 'D' and
 - Support dragging control points of the selected curve. [10 pts]
 - Display the current number of curves in the corner using Bezier curves to form the numbers (steal control points from http://jackf.net/bezier-clock/) [20 pts]
 - Display an animated Bezier clock (steal concept from http://jackf.net/bezier-clock/) [30 pts]
+
+
+start at first control point
+(2nd CP.y - 1st CP.y) = ny * t
+(2nd CP.x - 1st CP.x) = mx * t
