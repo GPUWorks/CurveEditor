@@ -7,7 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FC25857A19F986BB00A97DF4 /* Lagrange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC25857819F986BB00A97DF4 /* Lagrange.cpp */; };
+		FC25857E19F9875700A97DF4 /* Bezier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC25857B19F9875700A97DF4 /* Bezier.cpp */; };
+		FC25858119F98DFF00A97DF4 /* Polyline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC25857F19F98DFF00A97DF4 /* Polyline.cpp */; };
 		FC52083019F7DD7D00DC2688 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC52082F19F7DD7D00DC2688 /* main.cpp */; };
+		FC52084319F7DFB700DC2688 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC52084119F7DFB700DC2688 /* GLUT.framework */; };
+		FC52084419F7DFB700DC2688 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC52084219F7DFB700DC2688 /* OpenGL.framework */; };
+		FC52084A19F7DFFF00DC2688 /* Freeform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC52084819F7DFFF00DC2688 /* Freeform.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +29,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FC25857819F986BB00A97DF4 /* Lagrange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Lagrange.cpp; sourceTree = "<group>"; };
+		FC25857919F986BB00A97DF4 /* Lagrange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lagrange.h; sourceTree = "<group>"; };
+		FC25857B19F9875700A97DF4 /* Bezier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Bezier.cpp; sourceTree = "<group>"; };
+		FC25857C19F9875700A97DF4 /* Bezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bezier.h; sourceTree = "<group>"; };
+		FC25857D19F9875700A97DF4 /* float2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = float2.h; sourceTree = "<group>"; };
+		FC25857F19F98DFF00A97DF4 /* Polyline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Polyline.cpp; sourceTree = "<group>"; };
+		FC25858019F98DFF00A97DF4 /* Polyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Polyline.h; sourceTree = "<group>"; };
 		FC52082C19F7DD7D00DC2688 /* Graphics Curve Editor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Graphics Curve Editor"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC52082F19F7DD7D00DC2688 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		FC52084119F7DFB700DC2688 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		FC52084219F7DFB700DC2688 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		FC52084819F7DFFF00DC2688 /* Freeform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Freeform.cpp; sourceTree = "<group>"; };
+		FC52084919F7DFFF00DC2688 /* Freeform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Freeform.h; sourceTree = "<group>"; };
+		FC6A749619F9A2DC0024B212 /* Notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Notes; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +50,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC52084319F7DFB700DC2688 /* GLUT.framework in Frameworks */,
+				FC52084419F7DFB700DC2688 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,6 +61,8 @@
 		FC52082319F7DD7D00DC2688 = {
 			isa = PBXGroup;
 			children = (
+				FC52084119F7DFB700DC2688 /* GLUT.framework */,
+				FC52084219F7DFB700DC2688 /* OpenGL.framework */,
 				FC52082E19F7DD7D00DC2688 /* Graphics Curve Editor */,
 				FC52082D19F7DD7D00DC2688 /* Products */,
 			);
@@ -58,6 +80,16 @@
 			isa = PBXGroup;
 			children = (
 				FC52082F19F7DD7D00DC2688 /* main.cpp */,
+				FC52084819F7DFFF00DC2688 /* Freeform.cpp */,
+				FC52084919F7DFFF00DC2688 /* Freeform.h */,
+				FC25857B19F9875700A97DF4 /* Bezier.cpp */,
+				FC25857C19F9875700A97DF4 /* Bezier.h */,
+				FC25857819F986BB00A97DF4 /* Lagrange.cpp */,
+				FC25857919F986BB00A97DF4 /* Lagrange.h */,
+				FC25857F19F98DFF00A97DF4 /* Polyline.cpp */,
+				FC25858019F98DFF00A97DF4 /* Polyline.h */,
+				FC25857D19F9875700A97DF4 /* float2.h */,
+				FC6A749619F9A2DC0024B212 /* Notes */,
 			);
 			path = "Graphics Curve Editor";
 			sourceTree = "<group>";
@@ -118,7 +150,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC25857E19F9875700A97DF4 /* Bezier.cpp in Sources */,
+				FC52084A19F7DFFF00DC2688 /* Freeform.cpp in Sources */,
+				FC25857A19F986BB00A97DF4 /* Lagrange.cpp in Sources */,
 				FC52083019F7DD7D00DC2688 /* main.cpp in Sources */,
+				FC25858119F98DFF00A97DF4 /* Polyline.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +189,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -188,6 +225,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -232,6 +270,7 @@
 				FC52083519F7DD7D00DC2688 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
