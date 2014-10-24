@@ -18,7 +18,7 @@ public:
     float L(int i, float t);
     void addControlPoint(float2 p);
     float2 getPoint(float t);
-    bool deleteControlPoint(float2 clickLocation, float radius);
+    int deleteControlPoint(float2 clickLocation, float radius, int selectedControlPoint);
 private:
     std::vector<float> knots;
     void recalculateKnots();

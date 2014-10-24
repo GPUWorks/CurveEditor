@@ -4,9 +4,9 @@ The issue is that I have defined a variable selectedControlPoint within each cur
 
 Options:
     pass selectedControlPoint into "drawControlPoints" and "deleteControlPoints" and maybe other things. (this would also mean that a curve that is not selected cannot have any selected control points - which I'm not sure is good or bad)
+
+        (also, I can't unselect a control point if it has been deleted or, more importantly, decrement it if one before it has been deleted)
     deal with having a selectedControlPoint variable in each curve.
-
-
 
 
 Bezier: works

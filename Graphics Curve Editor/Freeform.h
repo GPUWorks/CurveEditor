@@ -50,7 +50,7 @@ public:
     //high-level setters
     virtual void addControlPoint(float2 p);
     void setType(char t);
-    virtual bool deleteControlPoint(float2 clickLocation, float radius);
+    virtual int deleteControlPoint(float2 clickLocation, float radius, int selectedControlPoint);
     
     //setters
 //    void setSelectedControlPoint(int index);

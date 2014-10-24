@@ -74,6 +74,14 @@ float pixelToYCoord(int y) {
     return -(float)y * 2.0/WINDOW_HEIGHT + 1.0;
 }
 
+//makes sure that every time a new curve is selected, the selectedControlPoint is reset
+void setSelectedCurve(int newSelectedCurve) {
+    if (newSelectedCurve != selectedCurve) {
+        selectedCurve = newSelectedCurve;
+        selectedControlPoint = -1;
+    }
+}
+
 //--------------------------------------------------------
 // Display callback that is responsible for updating the screen
 //--------------------------------------------------------
@@ -139,7 +147,7 @@ void onKeyBoard(unsigned char key, int x, int y) {
                 c = new Polyline();
             }
             curves.push_back(c);
-            selectedCurve = (int)curves.size() - 1;
+            setSelectedCurve((int)curves.size() - 1);
             systemMode = drawing;
         }
         
@@ -157,7 +165,7 @@ void onKeyBoard(unsigned char key, int x, int y) {
     }
     else if (key == ' ') {
         assert (selectedCurve >= -1);
-        selectedCurve = (selectedCurve + 1) % curves.size();
+        setSelectedCurve((selectedCurve + 1) % curves.size());
     }
     else if (key == 'a') {
         systemMode = addingControlPoints;
@@ -204,9 +212,11 @@ void onMouse(int button, int state, int x, int y) {
                 for (int j = 0; j < curves[i]->numControlPoints(); j++) {
                     if (coord.withinRange(curves[i]->getControlPoint(j), CLICK_PRECISION)) {
                         isControlPoint = true;
-                        selectedControlPoint = j;
                         printf("selectedControlPoint == %d\n", selectedControlPoint);
-                        selectedCurve = i;
+                        //for consistency
+                        setSelectedCurve(i);
+//                        selectedCurve = i;
+                        selectedControlPoint = j;
                     }
                 }
             }
@@ -214,7 +224,7 @@ void onMouse(int button, int state, int x, int y) {
             if (!isControlPoint) {
                 for (int i = 0; i < curves.size(); i++) {
                     if (curves[i]->onLine(coord, CLICK_PRECISION))
-                        selectedCurve = i;
+                        setSelectedCurve(i);
                 }
             }
         }
@@ -230,12 +240,12 @@ void onMouse(int button, int state, int x, int y) {
     }
     else if (systemMode == deletingControlPoints) {
         if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-            if (!curves[selectedCurve]->deleteControlPoint(coord, CLICK_PRECISION))
-                std::cout << "unable to delete control point\n";
+            //no way to check if this worked
+            selectedControlPoint = curves[selectedCurve]->deleteControlPoint(coord, CLICK_PRECISION, selectedControlPoint);
         }
     }
     
-//        //probably get rid of selected control points when mouse button is released
+//        //probably get rid of selected control points when curve is deselected
 //        if (state == GLUT_UP && selectedControlPoint > -1) {
 //            for (int i = 0; i < curves.size(); i++) {
 //                printf("resetting selected Control Point\n");

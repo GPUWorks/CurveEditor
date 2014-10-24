@@ -8,7 +8,7 @@
 
 #include "Freeform.h"
 
-void Freeform::drawControlPoints(bool isSelectedCurve) {
+void Freeform::drawControlPoints(bool isSelectedCurve, int selectedControlPoint) {
     glBegin(GL_POINTS);
     if (isSelectedCurve) {
         for (int i = 0; i < numControlPoints(); i++) {
@@ -50,20 +50,23 @@ int Freeform::numControlPoints() {
     return (int)controlPoints.size();
 }
 
-bool Freeform::deleteControlPoint(float2 clickLocation, float radius) {
+int Freeform::deleteControlPoint(float2 clickLocation, float radius, int selectedControlPoint) {
     for (int i = 0; i < controlPoints.size(); i++) {
         if(clickLocation.withinRange(controlPoints[i], radius)) {
             controlPoints.erase(controlPoints.begin() + i);
             //fix the selected index problem
             if (i < selectedControlPoint) {
-                selectedControlPoint--;
+                return selectedControlPoint - 1;
+//                selectedControlPoint--;
             }
             else if (i == selectedControlPoint) {
-                selectedControlPoint = -1;
+                return - 1;
+//                selectedControlPoint = -1;
             }
             //if all were selected
             else if (selectedControlPoint == controlPoints.size() + 1) {
-                selectedControlPoint--;
+                return selectedControlPoint;
+//                selectedControlPoint--;
             }
             return true;
         }
