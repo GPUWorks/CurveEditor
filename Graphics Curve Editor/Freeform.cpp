@@ -7,15 +7,14 @@
 //
 
 #include "Freeform.h"
+#include <assert.h>
 
 void Freeform::drawControlPoints(bool isSelectedCurve, int selectedControlPoint) {
     glBegin(GL_POINTS);
     if (isSelectedCurve) {
         for (int i = 0; i < numControlPoints(); i++) {
-            printf("selected control point (in drawControlPoints) is == %d\n", selectedControlPoint);
             if ((selectedControlPoint == i) ||
                 selectedControlPoint == controlPoints.size()) {
-                printf("here\n");
                 glColor3d(POINT_HIGHLIGHT_COLOR);
             }
             else {
@@ -34,6 +33,11 @@ void Freeform::drawControlPoints(bool isSelectedCurve, int selectedControlPoint)
     }
 
     glEnd();
+}
+
+//used to make sure that, if you are selecting a control point
+void Freeform::resetControlPoint(float2 p, int index) {
+    controlPoints[index] = p;
 }
 
 void Freeform::addControlPoint(float2 p) {
@@ -57,16 +61,13 @@ int Freeform::deleteControlPoint(float2 clickLocation, float radius, int selecte
             //fix the selected index problem
             if (i < selectedControlPoint) {
                 return selectedControlPoint - 1;
-//                selectedControlPoint--;
             }
             else if (i == selectedControlPoint) {
                 return - 1;
-//                selectedControlPoint = -1;
             }
             //if all were selected
             else if (selectedControlPoint == controlPoints.size() + 1) {
                 return selectedControlPoint;
-//                selectedControlPoint--;
             }
             return true;
         }
@@ -85,8 +86,7 @@ char Freeform::getType() {
 void Freeform::draw() {
     glLineWidth(DEFAULT_LINE_WIDTH);
     glBegin(GL_LINE_STRIP);
-    for (float f = 0; f < 1; f += (1/(float)PRECISION)){
-//        printf("drawing point\n");
+    for (float f = 0; f < 1; f += (1/(float)(PRECISION))){
         float2 pt = getPoint(f);
         glVertex2d(pt.x, pt.y);
     }
@@ -101,4 +101,27 @@ bool Freeform::onLine(float2 clickPosition, float radius) {
         }
     }
     return false;
+}
+
+void Freeform::translate(float2 offset) {
+    for (int i = 0; i < numControlPoints(); i++) {
+        controlPoints[i] -= offset;
+    }
+}
+
+bool Freeform::fill() {
+    filled = !filled;
+    return filled;
+}
+
+void Freeform::drawFilled() {
+    glBegin(GL_POLYGON);
+    for (double t = 0.0; t < 1; t+= (double)(1/PRECISION)) {
+        glVertex2d(getPoint(t).x, getPoint(t).y);
+    }
+    glEnd();
+}
+
+bool Freeform::isFilled() {
+    return filled;
 }

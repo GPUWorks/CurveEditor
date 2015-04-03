@@ -14,6 +14,7 @@
 		FC52084319F7DFB700DC2688 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC52084119F7DFB700DC2688 /* GLUT.framework */; };
 		FC52084419F7DFB700DC2688 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC52084219F7DFB700DC2688 /* OpenGL.framework */; };
 		FC52084A19F7DFFF00DC2688 /* Freeform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC52084819F7DFFF00DC2688 /* Freeform.cpp */; };
+		FC587D1C1A0002B9001D8555 /* CatmullClark.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC587D1A1A0002B9001D8555 /* CatmullClark.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,6 +43,8 @@
 		FC52084219F7DFB700DC2688 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		FC52084819F7DFFF00DC2688 /* Freeform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Freeform.cpp; sourceTree = "<group>"; };
 		FC52084919F7DFFF00DC2688 /* Freeform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Freeform.h; sourceTree = "<group>"; };
+		FC587D1A1A0002B9001D8555 /* CatmullClark.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CatmullClark.cpp; sourceTree = "<group>"; };
+		FC587D1B1A0002B9001D8555 /* CatmullClark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatmullClark.h; sourceTree = "<group>"; };
 		FC6A749619F9A2DC0024B212 /* Notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Notes; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -88,6 +91,8 @@
 				FC25857919F986BB00A97DF4 /* Lagrange.h */,
 				FC25857F19F98DFF00A97DF4 /* Polyline.cpp */,
 				FC25858019F98DFF00A97DF4 /* Polyline.h */,
+				FC587D1A1A0002B9001D8555 /* CatmullClark.cpp */,
+				FC587D1B1A0002B9001D8555 /* CatmullClark.h */,
 				FC25857D19F9875700A97DF4 /* float2.h */,
 				FC6A749619F9A2DC0024B212 /* Notes */,
 			);
@@ -154,6 +159,7 @@
 				FC52084A19F7DFFF00DC2688 /* Freeform.cpp in Sources */,
 				FC25857A19F986BB00A97DF4 /* Lagrange.cpp in Sources */,
 				FC52083019F7DD7D00DC2688 /* main.cpp in Sources */,
+				FC587D1C1A0002B9001D8555 /* CatmullClark.cpp in Sources */,
 				FC25858119F98DFF00A97DF4 /* Polyline.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

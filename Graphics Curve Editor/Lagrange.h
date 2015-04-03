@@ -19,6 +19,7 @@ public:
     void addControlPoint(float2 p);
     float2 getPoint(float t);
     int deleteControlPoint(float2 clickLocation, float radius, int selectedControlPoint);
+    void moveSelectedControlPoint(float x, float y, int selectedControlPoint);
 private:
     std::vector<float> knots;
     void recalculateKnots();

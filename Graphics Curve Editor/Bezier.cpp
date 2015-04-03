@@ -11,6 +11,7 @@
 
 Bezier::Bezier() {
     type = BEZIER;
+
 }
 
 double Bezier::bernstein(int i, int n, double t) {

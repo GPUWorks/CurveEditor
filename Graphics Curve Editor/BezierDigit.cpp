@@ -1,0 +1,81 @@
+////
+////  BezierDigit.cpp
+////  Graphics Curve Editor
+////
+////  Created by Jon Atkins on 10/30/14.
+////  Copyright (c) 2014 AIT. All rights reserved.
+////
+//
+//#include <stdio.h>
+//#include "BezierDigit.h"
+//
+//BezierDigit::BezierDigit() {
+//}
+//
+//BezierDigit::BezierDigit(int i) {
+//    switch (i) {
+//        case 0:
+//            controlPoints.push_back({254.0,47.0,159.0, 84.0, 123.0, 158.0, 131.0, 258.0});
+//            controlPoints.push_back({131.0, 258.0, 139.0, 358.0, 167.0, 445.0, 256.0, 446.0});
+//            controlPoints.push_back({256.0, 446.0,345.0, 447.0, 369.0, 349.0, 369.0, 275.0});
+//            controlPoints.push_back({369.0, 275.0, 369.0, 201.0, 365.0, 81.0, 231.0, 75.0});
+//            break;
+//        case 1:
+//            controlPoints.push_back({138.0, 180.0, 226.0, 99.0, 230.0, 58.0, 243.0, 43.0});
+//            controlPoints.push_back({243.0, 43.0, 256.0, 28.0, 252.0, 100.0, 253.0, 167.0});
+//            controlPoints.push_back({253.0, 167.0, 254.0, 234.0, 254.0, 194.0, 255.0, 303.0});
+//            controlPoints.push_back({255.0, 303.0, 256.0, 412.0, 254.0, 361.0, 255.0, 424.0});
+//            break;
+//        case 2:
+//            controlPoints.push_back({104.0,111.0,152.0, 55.0, 208.0, 26.0, 271.0, 50.0});
+//            controlPoints.push_back({271.0, 50.0,334.0, 74.0, 360.0, 159.0, 336.0, 241.0,});
+//            controlPoints.push_back({336.0, 241.0,312.0, 323.0, 136.0, 454.0, 120.0, 405.0});
+//            controlPoints.push_back({120.0, 405.0,104.0, 356.0, 327.0, 393.0, 373.0, 414.0});
+//            break;
+//        case 3:
+//            controlPoints.push_back({96.0, 132.0, 113.0, 14.0, 267.0, 17.0, 311.0, 107.0});
+//            controlPoints.push_back({311.0, 107.0, 355.0, 197.0, 190.0, 285.0, 182.0, 250.0});
+//            controlPoints.push_back({182.0, 250.0, 174.0, 215.0, 396.0, 273.0, 338.0, 388.0});
+//            controlPoints.push_back({338.0, 388.0, 280.0, 503.0, 110.0, 445.0, 93.0, 391.0});
+//            break;
+//        case 4:
+//            controlPoints.push_back({374.0, 244.0, 249.0, 230.0, 192.0, 234.0, 131.0, 239.0});
+//            controlPoints.push_back({131.0, 239.0, 70.0, 244.0, 142.0, 138.0, 192.0, 84.0});
+//            controlPoints.push_back({192.0, 84.0, 242.0, 30.0, 283.0, -30.0, 260.0, 108.0});
+//            controlPoints.push_back({260.0, 108.0, 237.0, 246.0, 246.0, 435.0, 247.0, 438.0});
+//            break;
+//        case 5:
+//            controlPoints.push_back({340.0, 52.0, 226.0, 42.0, 153.0, 44.0, 144.0, 61.0});
+//            controlPoints.push_back({144.0, 61.0, 135.0, 78.0, 145.0, 203.0, 152.0, 223.0});
+//            controlPoints.push_back({152.0, 223.0, 159.0, 243.0, 351.0, 165.0, 361.0, 302.0});
+//            controlPoints.push_back({361.0, 302.0, 371.0, 439.0, 262.0, 452.0, 147.0, 409.0});
+//            break;
+//        case 6:
+//            controlPoints.push_back({301.0, 26.0, 191.0, 104.0, 160.0, 224.0, 149.0, 296.0});
+//            controlPoints.push_back({149.0, 296.0, 138.0, 368.0, 163.0, 451.0, 242.0, 458.0});
+//            controlPoints.push_back({242.0, 458.0, 321.0, 465.0, 367.0, 402.0, 348.0, 321.0});
+//            controlPoints.push_back({348.0, 321.0, 329.0, 240.0, 220.0, 243.0, 168.0, 285.0});
+//            break;
+//        case 7:
+//            controlPoints.push_back({108.0, 52.0, 168.0, 34.0, 245.0, 42.0, 312.0, 38.0});
+//            controlPoints.push_back({312.0, 38.0, 379.0, 34.0, 305.0, 145.0, 294.0, 166.0});
+//            controlPoints.push_back({294.0, 166.0, 283.0, 187.0, 243.0, 267.0, 231.0, 295.0});
+//            controlPoints.push_back({231.0, 295.0, 219.0, 323.0, 200.0, 388.0, 198.0, 452.0});
+//            break;
+//        case 8:
+//            controlPoints.push_back({243.0, 242.0, 336.0, 184.0, 353.0, 52.0, 240.0, 43.0});
+//            controlPoints.push_back({240.0, 43.0, 127.0, 34.0, 143.0, 215.0, 225.0, 247.0});
+//            controlPoints.push_back({225.0, 247.0, 307.0, 279.0, 403.0, 427.0, 248.0, 432.0});
+//            controlPoints.push_back({248.0, 432.0, 93.0, 437.0, 124.0, 304.0, 217.0, 255.0});
+//            break;
+//        case 9:
+//            controlPoints.push_back({322.0, 105.0, 323.0, 6.0, 171.0, 33.0, 151.0, 85.0});
+//            controlPoints.push_back({151.0, 85.0, 131.0, 137.0, 161.0, 184.0, 219.0, 190.0});
+//            controlPoints.push_back({219.0, 190.0, 277.0, 196.0, 346.0, 149.0, 322.0, 122.0});
+//            controlPoints.push_back({322.0, 122.0, 298.0, 95.0, 297.0, 365.0, 297.0, 448.0});
+//            break;
+//            
+//        default:
+//            break;
+//    }
+//}

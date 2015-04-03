@@ -53,16 +53,13 @@ int Lagrange::deleteControlPoint(float2 clickLocation, float radius, int selecte
             //fix the selected index problem
             if (i < selectedControlPoint) {
                 return selectedControlPoint - 1;
-//                selectedControlPoint--;
             }
             else if (i == selectedControlPoint) {
                 return - 1;
-//                selectedControlPoint = -1;
             }
             //if all were selected
             else if (selectedControlPoint == controlPoints.size() + 1) {
                 return selectedControlPoint;
-//                selectedControlPoint--;
             }
             return true;
         }

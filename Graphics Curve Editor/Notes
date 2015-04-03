@@ -1,46 +1,25 @@
-Selecting Control Points:
+Note: I held off submitting in case I had time to finish Bezier Counter over the past week but I did not have any time so this is essentially the version as it existed on Thursday 10/30.
 
-The issue is that I have defined a variable selectedControlPoint within each curve but coded all of main as if it were a global variable. I can't switch it to a global variable because then it would be outside of the scope of Freeform and then I'd have to pass it into the draw function every time.
+Implemented Items:
+    Curves:
+        - P Polyline
+        - B Bezier
+        - L Lagrange
+        - C Catmull-Clark Subdivision (default set to 3 subdivisions) (20)
 
-Options:
-    pass selectedControlPoint into "drawControlPoints" and "deleteControlPoints" and maybe other things. (this would also mean that a curve that is not selected cannot have any selected control points - which I'm not sure is good or bad)
+    Functional Keys:
+        - SPACE selects the next curve (5)
+        - F fills in (convex) curves (5)
+        - D deletes control points (10)
+        - A adds control points (5)
+        - Z clears all the curves on the screen (0)
 
-        (also, I can't unselect a control point if it has been deleted or, more importantly, decrement it if one before it has been deleted)
-    deal with having a selectedControlPoint variable in each curve.
+    Other Functionalities:
+        - Curve selection (15)
+            (doesn't work amazingly well for Polyline and Subdivision)
+        - Control point dragging (10)
+        - Curve dragging (15)
 
+    Total: 85/85 Points
 
-Bezier: works
-Lagrange: works
-Polyline: works
-
-Control Points: works
-
-
-
-Points:
-
-Implement the following features to earn points (starred (*) items require extra research over presented material, see notes below):
-x(5) - Pressing SPACE makes the next object selected instead of the current one, repeatedly pressing SPACE cycles over all curves. [5 pts]
-- When no keys are pressed and the user presses the mouse button, the object at the mouse cursor (if there is any) becomes selected. [15 pts if this works approximately, (*) 25 pts if this works exactly]
-    - Bezier: x
-    - Lagrange: x
-    - Polyline:
-- As long as the mouse button remains pressed, mouse movements drag the selected object. When the button is released, the object remains selected. [15 pts]
-x(5) - When an object is selected, the user may hold down 'A' to add control points to the selected object by clicking. [5 pts]
-x (10) Support removing control points of the selected curve, by holding 'D' and clicking them. [10 pts]
-    - Bezier: x
-    - Lagrange: x
-    - Polyline: x
-- When an object is selected, pressing the 'F' key should turn the curve into a polygon that fills the curve. [5 pts if it works for convex shapes, (*) 20 pts if it works for non-self-intersecting curves, (*) 25 points if it works for any curve]
-- Support Catmull-Clark subdivision curves, created by clicking control points while holding key 'C'. [20 pts]
-- Support Catmull-Rom splines, created by clicking control points while holding key 'R'. [25 pts]
-- Support cubic Hermite interpolation splines, created by clicking control points while holding key 'U'. Derivatives at control points should be manually editable. Extra controls should be displayed to allow the user to adjust derivatives. [(*) 35 pts]
-- Support uniform cubic B-splines, created by clicking control points while holding key 'S'. [(*) 30 pts]
-- Support dragging control points of the selected curve. [10 pts]
-- Display the current number of curves in the corner using Bezier curves to form the numbers (steal control points from http://jackf.net/bezier-clock/) [20 pts]
-- Display an animated Bezier clock (steal concept from http://jackf.net/bezier-clock/) [30 pts]
-
-
-start at first control point
-(2nd CP.y - 1st CP.y) = ny * t
-(2nd CP.x - 1st CP.x) = mx * t
+Thank you again for the extra time.

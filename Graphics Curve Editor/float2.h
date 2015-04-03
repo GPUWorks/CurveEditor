@@ -78,6 +78,11 @@ public:
         y *= a;
     }
     
+    bool operator!=(float2 a) {
+    
+        return (x != a.x || y != a.y);
+    }
+    
     float norm()
     {
         return sqrtf(x*x+y*y);
@@ -105,18 +110,18 @@ public:
     
     
     
-    //checks if the point is within the given range of the given radius (circular range)
+    /* checks if the point is within the given radius of the given point (circular range) */
     bool withinRange(float2 target, float radius) {
         float2 diff = target - *this;
         float distanceSqrd = (diff.x * diff.x) + (diff.y * diff.y);
         
         if (distanceSqrd <= radius * radius) {
-//            std::cout << "Within Range\n\n\n\n";
             return true;
         }
         return false;
     }
 };
 
+const float2 SENTINEL_FLOAT2 = float2(-5, -5);
 
 #endif

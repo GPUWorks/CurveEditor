@@ -17,10 +17,8 @@ public:
     Polyline();
     void draw();
     float2 getPoint(float t);
-    bool onLine(float2 clickPosition, float radius);
-//    bool deleteControlPoint(float2 clickLocation, float radius);
-private:
-//    bool isOnLine(float2 p);
+    bool onLine(float2 point, float radius);
+    void drawFilled();
 };
 
 #endif /* defined(__Graphics_Curve_Editor__Polyline__) */

@@ -22,6 +22,7 @@
 #include "Bezier.h"
 #include "Lagrange.h"
 #include "Polyline.h"
+#include "CatmullClark.h"
 
 float timeElapsed = 0;
 
@@ -34,10 +35,11 @@ const float CLICK_PRECISION = .05;
 const int MIN_CONTROL_POINTS = 2;
 
 //default drawing colors
-#define HIGHLIGHT_COLOR .0, .0, .8
+#define HIGHLIGHT_COLOR .275, .882, 1
 #define BEZIER_COLOR .9, .9, .1
 #define LAGRANGE_COLOR .1, .9, .1
 #define POLYLINE_COLOR .9, .1, .1
+#define CATMULL_CLARK_COLOR 1, .565, .275
 
 //array of valid inputs mean things table:
 bool validCurveTypes[256];
@@ -48,7 +50,7 @@ void initializevalidCurveTypes() {
     validCurveTypes[BEZIER] = true;
     validCurveTypes[LAGRANGE] = true;
     validCurveTypes[POLYLINE] = true;
-    //    validCurveTypes[CATMULL_CLARK] = true;
+    validCurveTypes[CATMULL_CLARK] = true;
     //    validCurveTypes[CATMULL_ROM] = true;
     //    validCurveTypes[HERMITE] = true;
     //    validCURVETYPES[B_SPLINES] = true;
@@ -57,13 +59,14 @@ void initializevalidCurveTypes() {
 //will hold the type of curve that is currently being drawn
 char currentCurveType;
 
-enum state {waiting, drawing, addingControlPoints, deletingControlPoints};
+enum state {waiting, drawing, addingControlPoints, deletingControlPoints, draggingControlPoint};
 
 state systemMode = waiting;
 
 std::vector<Freeform*> curves;
 int selectedCurve = -1;
 int selectedControlPoint = - 1;
+float2 currentMousePosition;
 
 /* Pixel Conversion Functions */
 float pixelToXCoord(int x) {
@@ -98,22 +101,25 @@ void onDisplay() {
                 glColor3d(HIGHLIGHT_COLOR);
             }
             else if (!curves[i]->isEmpty()) {
-//                printf("here\n");
-                if(curves[i]->getType() == 'b')
+                if(curves[i]->getType() == BEZIER)
                     glColor3d(BEZIER_COLOR);
-                else if (curves[i]->getType() == 'l')
+                else if (curves[i]->getType() == LAGRANGE)
                     glColor3d(LAGRANGE_COLOR);
-                else if (curves[i]->getType() == 'p')
+                else if (curves[i]->getType() == POLYLINE)
                     glColor3d(POLYLINE_COLOR);
+                else if (curves[i]->getType() == CATMULL_CLARK)
+                    glColor3d(CATMULL_CLARK_COLOR);
             }
-            if(curves[i]->numControlPoints() > 0)
+            if(curves[i]->numControlPoints() > 0) {
+                if (curves[i]->isFilled())
+                    curves[i]->drawFilled();
                 curves[i]->draw();
+            }
         }
     }
     //draw control points
     glPointSize(5.0);
     glColor3d(POINT_COLOR);
-    printf("selectedControlPoint now is %d\n", selectedControlPoint);
     if(!curves.empty()) {
         for (int i = 0; i < curves.size(); i++) {
             bool isSelected = (selectedCurve == i);
@@ -121,6 +127,7 @@ void onDisplay() {
                 curves[i]->drawControlPoints(isSelected, selectedControlPoint);
         }
     }
+    
     glutSwapBuffers();
 }
 
@@ -132,7 +139,6 @@ void onIdle(){
 
 //function to be called when a key is pressed down
 void onKeyBoard(unsigned char key, int x, int y) {
-    std::cout << key << " key pressed\n";
     if (validCurveTypes[key]) {
         if (systemMode != drawing) {
             //add new curve
@@ -146,22 +152,13 @@ void onKeyBoard(unsigned char key, int x, int y) {
             else if (key == POLYLINE) {
                 c = new Polyline();
             }
+            else if (key == CATMULL_CLARK) {
+                c = new CatmullClark();
+            }
             curves.push_back(c);
             setSelectedCurve((int)curves.size() - 1);
             systemMode = drawing;
         }
-        
-        //        else if (systemMode == drawing) {
-        //            std::cout << "here" << std::endl;
-        //            assert (selectedCurve >= 0);
-        //            if (key == curves[selectedCurve]->getType()) {
-        //                //keep drawing
-        //            }
-        //            else {
-        //                std::cout << "please don't press two keys at once\n" << std::endl;
-        //            }
-        //        }
-        
     }
     else if (key == ' ') {
         assert (selectedCurve >= -1);
@@ -173,25 +170,22 @@ void onKeyBoard(unsigned char key, int x, int y) {
     else if(key == 'd') {
         systemMode = deletingControlPoints;
     }
-    else if (key == 'c') {
+    else if (key == 'f') {
+        curves[selectedCurve]->fill();
+//        systemMode = waiting;
+    }
+    else if (key == 'z') {
         curves.clear();
         systemMode = waiting;
     }
     else
-        std::cout << "That key is unsupported\n";
-    
-    
-    //    std::cout << "after onKeyboard: mode is currently: " << systemMode << std::endl;
+        fprintf(stderr, "That key is unsupported\n");
     
     glutPostRedisplay();
 }
 
-//when the key is released (if it is the right one?? - do I need it to be)
 void onKeyBoardRelease(unsigned char key, int x, int y) {
-        std::cout << key << " released" << std::endl;
-//    if (validKeyInputs[key]) {
     if (validCurveTypes[key] || key == 'd') {
-        //        std::cout << "OnKeyBoardRelease: mode is currently: " << systemMode << std::endl;
         if (!curves.empty()) {
             assert(selectedCurve >= 0);
             if (curves[selectedCurve]->numControlPoints() < MIN_CONTROL_POINTS)
@@ -202,59 +196,70 @@ void onKeyBoardRelease(unsigned char key, int x, int y) {
 }
 
 void onMouse(int button, int state, int x, int y) {
-    printf("click registered\n");
-    float2 coord = float2(pixelToXCoord(x), pixelToYCoord(y));
+    currentMousePosition = float2(pixelToXCoord(x), pixelToYCoord(y));
+    
     if (systemMode == waiting) {
         //select curves or control points
         if (systemMode == GLUT_DOWN) {
+            //select controlPoints
             bool isControlPoint = false;
             for (int i = 0; i < curves.size(); i++) {
                 for (int j = 0; j < curves[i]->numControlPoints(); j++) {
-                    if (coord.withinRange(curves[i]->getControlPoint(j), CLICK_PRECISION)) {
+                    if (currentMousePosition.withinRange(curves[i]->getControlPoint(j), CLICK_PRECISION)) {
                         isControlPoint = true;
-                        printf("selectedControlPoint == %d\n", selectedControlPoint);
                         //for consistency
                         setSelectedCurve(i);
-//                        selectedCurve = i;
                         selectedControlPoint = j;
+                        
+                        //break out of all loops
+                        glutPostRedisplay();
+                        return;
                     }
                 }
             }
             //select curves
             if (!isControlPoint) {
+                selectedControlPoint = -1;
                 for (int i = 0; i < curves.size(); i++) {
-                    if (curves[i]->onLine(coord, CLICK_PRECISION))
+                    if (curves[i]->onLine(currentMousePosition, CLICK_PRECISION)) {
                         setSelectedCurve(i);
+                        selectedControlPoint = curves[i]->numControlPoints();
+                    }
                 }
             }
         }
     }
     else if (systemMode == drawing || systemMode == addingControlPoints) {
-        
         if ((button == GLUT_LEFT_BUTTON || GLUT_RIGHT_BUTTON) && state == GLUT_DOWN) {
             assert (!curves.empty());
             if (selectedCurve >= 0) {
-                curves[selectedCurve]->addControlPoint(coord);
+                curves[selectedCurve]->addControlPoint(currentMousePosition);
             }
         }
     }
     else if (systemMode == deletingControlPoints) {
         if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
             //no way to check if this worked
-            selectedControlPoint = curves[selectedCurve]->deleteControlPoint(coord, CLICK_PRECISION, selectedControlPoint);
+            selectedControlPoint = curves[selectedCurve]->deleteControlPoint(currentMousePosition, CLICK_PRECISION, selectedControlPoint);
         }
     }
     
-//        //probably get rid of selected control points when curve is deselected
-//        if (state == GLUT_UP && selectedControlPoint > -1) {
-//            for (int i = 0; i < curves.size(); i++) {
-//                printf("resetting selected Control Point\n");
-//                selectedControlPoint = -1;
-//            }
-//        }
-    
     glutPostRedisplay();
 }
+
+void onMouseMotion(int x, int y) {
+    float2 coord = float2(pixelToXCoord(x), pixelToYCoord(y));
+    float2 distance = currentMousePosition - coord;
+    currentMousePosition = coord;
+    if (selectedControlPoint > -1 && selectedControlPoint < curves[selectedCurve]->numControlPoints()) {
+        curves[selectedCurve]->resetControlPoint(coord, selectedControlPoint);
+    }
+    else if (selectedControlPoint == curves[selectedCurve]->numControlPoints()) {
+        curves[selectedCurve]->translate(distance);
+    }
+        
+}
+
 
 //--------------------------------------------------------
 // The entry point of the application
@@ -274,6 +279,7 @@ int main(int argc, char *argv[]) {
     glutKeyboardFunc(onKeyBoard);
     glutKeyboardUpFunc(onKeyBoardRelease);
     glutMouseFunc(onMouse);
+    glutMotionFunc(onMouseMotion);
     
     glutMainLoop();                    			// Event loop  
     
